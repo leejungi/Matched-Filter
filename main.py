@@ -15,7 +15,7 @@ if __name__=="__main__":
 			8: "White vinyl",
 			9: "Rotten Fig",
 		}
-	data_path="/home/a/Dataset/Orion_Fig_Dataset/FX17/abnormal/5/" 
+	data_path="/home/a/Dataset/Orion_Fig_Dataset/FX17/abnormal/4/" 
 	data = load_data(data_path, "data.raw", calibration=True)/4095.0
 	gt = load_data(data_path, "label.npy")
 
@@ -28,8 +28,8 @@ if __name__=="__main__":
 	for label in np.unique(gt):
 		print("Clustering: ", label)
 		indices = np.where(gt==label)
-#		spectra= data[indices][:100,:]
-		spectra= data[indices]
+		spectra= data[indices][:100,:]
+#		spectra= data[indices]
 
 		kmeans = KMeans(cluster).fit(spectra)
 		clustering= np.array(kmeans.labels_)
@@ -61,8 +61,8 @@ if __name__=="__main__":
 	for label in np.setdiff1d(np.unique(gt), target):
 		score=np.inf
 		for i,c in enumerate(c_set[label]):
-			tmp_score = np.min(np.sum((c_set[target]-c)**2.,0))
-			argmin= np.argmin(np.sum((c_set[target]-c)**2.,0))
+			tmp_score = np.min(np.sum((c_set[target]-c)**2.,1))
+			argmin= np.argmin(np.sum((c_set[target]-c)**2.,1))
 			if score > tmp_score:
 				t_index=argmin
 				index=i
